@@ -1,0 +1,34 @@
+# python
+*~
+__pycache__
+debug
+.ipynb_checkpoints
+.cache
+
+*#
+*.pyc
+*.egg-info
+*.war
+*.csv
+*.db
+*.xlsx
+log/
+logs/
+# IntelliJ Idea project files
+.idea
+target
+*.iml
+
+# Eclipse project files
+.classpath
+.settings
+.project
+
+# Temporary files
+conf_dev
+*.pyc
+out
+
+# OSX temp files
+.DS_Store
+.json
