@@ -1,6 +1,22 @@
-\section{Introduction} \label{sec:intro}
+\section{Project Requirements} \label{sec:intro}
 
-
+In this project, we are required to crawl classical Chinese poems onlineand building a simple search engine. Detailed requirements are as follows:
+\begin{enumerate}
+  \item \textbf{Data Crawling and Preprocessing}. \\
+      You need to crawl classical Chinese poems from websites. After that, you have to do some necessary data preprocessing steps to transform the raw data into structure records, with each having the following attributes: title, author, dynasty, content, and optionally other information if available: translation, annotation, appreciation, background, etc. 
+  \item \textbf{Search Engine}. Based in the poems, you need to implement a simple search engine supporting the following functionalities. 
+        \begin{enumerate}[a)]
+          \item \textbf{Boolean Search}: Users provide search keys and operations between keys. The system needs to return all the relevant poems (Either title or content meets the requirement of the query). The query language must include operations such as AND, OR, NOT.
+          \item \textbf{Zone-specific Search}: Allow users to specify the attribute to filter/search. \\
+              For enumerable attributes like author and dynasty, the results should only contain those exactly match the query. \\
+              For other attributes like title and content, a Boolean or ranked search can be performed. \\
+              You can use either designs of UI or query (e.g. author(李白), title(酒)) to support such specification.
+          \item \textbf{Pinyin-based Tolerant(Fuzzy) Search}: Just like SOUNDEX introduced in class, we can use pinyin for Chinese phonetic tolerant search. This can be especially useful when the user enters a wrong word with the same sound, or the poem itself contains 通假字. \\
+              Therefore, your search engine should support a special query language SOUND(x) which can retrieve poems with any word having the same pinyin as x. For example, we should be able to get "最爱湖东行不足，绿杨阴里白沙堤。" with SOUND(荫).
+          \item \textbf{Ranked Search}: Return the search results with certain order that may be favorable by the users. The factors to consider may include: semantic relevance, fame of the author and the poem itself, etc. You can use any ranking method and any available information only to achieve this. We will prepare several test cases and score the system according to our search experience.
+        \end{enumerate}
+  \item \textbf{Nice Web Interface} for demo and \textbf{Project Report}.
+\end{enumerate}
 
 
 
