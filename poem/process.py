@@ -115,7 +115,7 @@ def word_count(dict):
                 num_dict_word = num_dict_word + 1
             
 
-    print(num_dict_word)
+    # print(num_dict_word)
     return num_dict_word, dict_word
 
 # query = ''
@@ -194,20 +194,68 @@ def vec_to_outlist(vec0):
             ans.append(i)
     return ans
 
-
+#按顺序这个东西其实并不太好搞，因为有AND OR NOT，所以这里删掉
 def outlist_to_out(ans_list, df_all):
+    # ans_list = query_seq(query, ans_list, df_all)
+    # print(ans_list)
     flag = np.zeros(length_poem + 1, dtype=Boolean)
+    num = 0
     if ans_list == NULL:
         print('搜索结果为空！')
     for i in ans_list:
+        # print(i[0])
         if flag[i] == False:
+            num = num + 1
             flag[i] = True
             out = df_all.loc[df_all.id == i]
             print(out)
             # for j in out:
             #     print(j)
+    print('共搜到诗的数目：')
+    print(num)
 
-def binary_search_in(context, dict_word, matrix_binary):
+
+def query_seq(query, ans_list, df_all):
+    # print('query')
+    # print(query)
+    length = len(ans_list)
+    ans = []
+
+    if ans_list == NULL:
+        return
+    for i in ans_list:
+        out = df_all.loc[df_all.id == i].values[0]
+        if out[2].find(query) >= 0:
+            # print(out[2])
+            ans.append( [i, out[2].find(query)]  )
+        if out[3].find(query) >= 0:
+            # print(out[3])
+            ans.append( [i, out[3].find(query)]  )
+        if out[1].find(query) >= 0:
+            # print(out[4])
+            ans.append( [i, out[1].find(query)]  )
+        if out[4].find(query) >= 0:
+            # print(out[4])
+            # print(i)
+            # print(out[4].find(query))
+            ans.append( [i, out[4].find(query)]  )
+
+        
+        # print(out)
+        # for x in out:
+        #     print(x)
+        # print(out)
+    # ans = np.array(ans)
+    # print(type(ans))
+    # print(ans)
+    ans.sort(key=lambda x:x[1])
+    # sorted(ans, key=lambda x:(x[1]))
+    # ind = np.lexsort(ans[:,1])
+    # print(ans)
+    return ans
+
+
+def binary_search_in(context, dict_word, matrix_binary, df_all):
         context = context.replace('N','')
         context = context.replace('U','')
         context = context.replace('n','')
@@ -216,13 +264,25 @@ def binary_search_in(context, dict_word, matrix_binary):
         context = context.replace('。','')
         context = context.replace('!','')
         context = context.replace('?','')
-        out = []
+        out = np.ones(length_poem + 1, dtype=int)
         for (i, word) in enumerate(context):
             # print(word)
-            if i == 0:
-                id = dict_word[word]
-                out = matrix_binary[id]
+            # if i == 0:
+            #     id = dict_word[word]
+            #     out = matrix_binary[id]
+            #应该能去，要是出bug加回来
             out = binary_search_and(out, matrix_binary[dict_word[word]])
+        # print(out)
+        for (id, value) in enumerate(out):
+            if value == 1:
+                context_in_all = df_all.loc[df_all.id == id].values[0]
+                exist = context_in_all[1].find(context) + context_in_all[2].find(context) + context_in_all[3].find(context) + context_in_all[4].find(context)
+                if exist == -4:
+                    # print(context)
+                    # print(context_in_all)
+                    # assert()
+                    out[id] = 0
+        
         return out
 
 
@@ -245,42 +305,72 @@ def query_exact_dynasty(context, df_all):
 
 
 
-
-
-
-
 # 说实话很乱，不如一次性输入一串字符串来拆（
-def query_binary(dict_word, matrix_binary, df):
-    query = input("请输入查询, 或者输入NOT\n")
+# def query_binary_old(dict_word, matrix_binary_dynasty, matrix_binary_poet, matrix_binary_poem, matrix_binary_all, df):
+#     query = input("请输入查询, 或者输入NOT\n")
 
-    if query == 'NOT':
-        query = input("输入NOT后查询\n")
-        ans = binary_search_in(query, dict_word, matrix_binary)
-        ans = binary_search_not(ans)
+#     if query == 'NOT':
+#         query = input("输入NOT后查询\n")
+#         # ans = query_binary_seq(dict_word, matrix_binary_dynasty, matrix_binary_poet, matrix_binary_poem, matrix_binary_all, query)
+#         ans = binary_search_in(query, dict_word, matrix_binary_all, df)
+#         ans = binary_search_not(ans)
 
-    else:
-        ans = binary_search_in(query, dict_word, matrix_binary)
+#     else:
+#         ans = binary_search_in(query, dict_word, matrix_binary_all, df)
 
-    operation = input("是否继续输入查询：AND , OR. 输入END结束查询输入\n")
-    while operation != 'END':
-        query = input("请输入查询,或者输入NOT\n")
-        if query == 'NOT':
-            query = input("输入NOT后查询")
-            temp = binary_search_in(query, dict_word, matrix_binary)
-            temp = binary_search_not(temp)
-        else:
-            temp = binary_search_in(query, dict_word, matrix_binary)
-        if operation == 'AND':
-            ans = binary_search_and(ans, temp)
-        if operation == 'OR':
-            ans = binary_search_or(ans, temp)
+#     operation = input("是否继续输入查询：AND , OR. 输入END结束查询输入\n")
+#     while operation != 'END':
+#         query = input("请输入查询,或者输入NOT\n")
+#         if query == 'NOT':
+#             query = input("输入NOT后查询")
+#             temp = binary_search_in(query, dict_word, matrix_binary_all, df)
+#             temp = binary_search_not(temp)
+#         else:
+#             temp = binary_search_in(query, dict_word, matrix_binary_all, df)
+#         if operation == 'AND':
+#             ans = binary_search_and(ans, temp)
+#         if operation == 'OR':
+#             ans = binary_search_or(ans, temp)
         
-        operation = input("是否继续输入查询：AND , OR. 输入END结束查询输入\n")
+#         operation = input("是否继续输入查询：AND , OR. 输入END结束查询输入\n")
 
+
+#     out_list =  vec_to_outlist(ans)
+#     outlist_to_out(out_list, df)
+
+def query_binary(dict_word, matrix_binary_dynasty, matrix_binary_poet, matrix_binary_poem, matrix_binary_all, df):
+    query = input("请输入查询\n")
+    if query == NULL:
+        print('输入错误！')
+    ans = np.ones(length_poem + 1, dtype=int)
+    # 查询形如 白居易 AND 琵琶行 AND NOT 李清照 用空格隔开各个查询项
+    m = re.split(r" ", query)
+    prev = 1 #0 word 1 AND 2 OR
+    prev_not = 0 #0 False 1 True
+    for context in m:
+        if context == 'AND':
+            prev = 1
+        elif context == 'OR':
+            prev = 2
+        elif context == 'NOT':
+            prev_not = 1
+        else:
+            temp = binary_search_in(context, dict_word, matrix_binary_all, df)
+            
+            if prev_not == 1:
+                temp = binary_search_not(temp)
+                prev_not = 0
+            if prev == 1:
+                ans = binary_search_and(ans, temp)
+            if prev == 2:
+                ans = binary_search_or(ans,temp)
+            
+            prev = 0
 
     out_list =  vec_to_outlist(ans)
-    outlist_to_out(out_list,df)
-
+    outlist_to_out(out_list, df)
+            
+    
 
 
 def query_zone_input():
@@ -300,27 +390,27 @@ def query_zone_input():
     
 
 
-#context 里面这个形式:[dynasty,poet_name, poem_name, poem_content]， 如果没有输入NULL
+#context 里面这个形式:[dynasty,poet_name, poem_name, poem_content]， 如果没有输入0
 
 def query_zone(df_all, dict_word, matrix_binary_poem, matrix_binary_contents,  context = [0,0,0,0]):
-    print(context)
+    # print(context)
     if context[0] != 0:
-        print('dyan')
+        # print('dyan')
         list_dynasty = query_exact_dynasty(context[0], df_all)
     else:
         list_dynasty = np.ones(length_poem + 1, dtype=int)
     if context[1] != 0:
-        print('poet')
+        # print('poet')
         list_poet = query_exact_poet(context[1], df_all)
     else:
         list_poet = np.ones(length_poem + 1, dtype=int)
     if context[2] != 0:
-        print('poem')
+        # print('poem')
         list_poem = binary_search_in(context[2], dict_word, matrix_binary_poem)
     else:
         list_poem = np.ones(length_poem + 1, dtype=int)
     if context[3] != 0:
-        print('s')
+        # print('s')
         list_context = binary_search_in(context[3], dict_word, matrix_binary_contents)
     else:
         list_context = np.ones(length_poem + 1, dtype=int)
@@ -331,3 +421,113 @@ def query_zone(df_all, dict_word, matrix_binary_poem, matrix_binary_contents,  c
     return ans
 
 #输出里面朝代id是空
+
+def query_binary_test(context, df_all):
+    print(df_all.loc[df_all.dynasty_name == context])
+    print(df_all.loc[df_all.poem_name == context])
+    print(df_all.loc[df_all.poet_name == context])
+    print(df_all.loc[df_all.contents == context])
+
+
+
+def preprocess_pinyin():
+    pinyin_file = open('.\poems\data\pinyin.txt', 'r', encoding='utf8')
+    ptxt = pinyin_file.readline()
+
+    dict_word_pinyin = {'阿':[]}
+    dict_pinyin_word = {'a':['阿']}
+
+    while len(ptxt) != 0 :
+        ptxt = ptxt.strip('\n')
+        ptxt = "".join(ptxt)
+        
+        m = re.split(r" ", ptxt)
+        word = ''
+        for (i,context) in enumerate(m):
+            if i == 0:
+                word = context
+            if i != 0:
+                if context in dict_word_pinyin.keys():
+                    dict_word_pinyin[word].append(context)
+                else:
+                    dict_word_pinyin[word] = [context]
+
+                if context in dict_pinyin_word.keys():
+                    dict_pinyin_word[context].append(word)
+                else:
+                    dict_pinyin_word[context] = [word]
+
+        ptxt = pinyin_file.readline()
+
+    
+    pinyin_file.close()
+
+    return dict_word_pinyin, dict_pinyin_word
+
+    # for item in dict_word_pinyin.items():
+    #     print(item)
+
+def query_fuzzy(dict_word_pinyin, dict_pinyin_word, dict_word, matrix_binary_all, df_all):
+    query_word = input('请输入模糊搜索\n')
+    ans1 = binary_search_in(query_word, dict_word,matrix_binary_all, df_all)
+
+    ans = np.ones(length_poem + 1, dtype=int)
+    for word in query_word:
+        if word in dict_word_pinyin.keys():
+            pinyins = dict_word_pinyin[word]
+        else:
+            continue #就，这个字在拼音表里面根本找不到，直接跳过吧，当作所有项都符合（， 如果存在的话则这个字肯定有读音，后面不需要再判断
+        temp = np.zeros(length_poem + 1, dtype=int)
+        for pinyin in pinyins:
+            word_list = dict_pinyin_word[pinyin]
+            temp2 = np.zeros(length_poem + 1, dtype=int)
+            for fuzzy_word in word_list:
+                if fuzzy_word in dict_word.keys():
+                    temp2 = binary_search_or(temp2, binary_search_in(fuzzy_word, dict_word,matrix_binary_all, df_all))
+                else:
+                    continue #同音字在古诗词里面从来没有使用过，直接跳过。（如‘啥’‘铝’等字）
+            temp = binary_search_or(temp, temp2)
+        
+        ans = binary_search_and(ans, temp)
+
+    #要改一下最好，但是怎么改还在想
+    out_list =  vec_to_outlist(ans1) + vec_to_outlist(ans)
+    outlist_to_out(out_list, df_all) #最好改成模糊搜索版本的
+
+
+
+def rank_determine(df_all):
+    print("???")
+    length = df_all.shape[0]
+    # for i in range(length):
+    #     row = df_all.loc[df_all.id == i].value[0]
+    list_weight_poet = [] #诗人的诗越多，权重越重
+    list_weight_poem = [] #诗人的诗越短，权重越重
+
+    for index, row_df in df_all.iterrows():
+        if index % 1000 == 0:
+            print(index)
+        # print(index, row)
+        row = row_df.values
+        poet_name = row[2]
+        
+        cou = df_all.id[df_all.poet_name == poet_name].count()
+        list_weight_poet.append(cou)
+
+        len_poem =   len(row[4])
+        list_weight_poem.append(len_poem)
+
+
+    df_all['weight_poet'] = list_weight_poet
+    df_all['weight_poem'] = list_weight_poem
+
+    return df_all
+    # df_all = pd.DataFrame({'id':list(dict_poem_name.keys()),
+    #                     # 'dynasty_id':list(dict_dynasty_id.values()),
+    #                     'dynasty_name':list(dict_dynasty_name.values()),
+    #                     'poet_name':list(dict_poet_name.values()),
+    #                     'poem_name':list(dict_poem_name.values()),
+    #                     'contents':list(dict_contents.values()),
+    #                     'desc':list(dict_desc.values())})
+
+        
