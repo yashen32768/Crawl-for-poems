@@ -32,3 +32,10 @@ out
 # OSX temp files
 .DS_Store
 .json
+
+# Tex files
+*.log
+*.out
+*.aux
+*.synctex.gz
+

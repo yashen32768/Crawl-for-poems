@@ -1,5 +1,6 @@
 
 import copy
+from copy import deepcopy
 from scrapy.http import Request
 from scrapy.spiders import CrawlSpider
 from poem.items import PoemItem
@@ -35,7 +36,7 @@ class Spider(CrawlSpider):
                 "poet_name":poet_name,
                 "poet_url":poet_url
             }
-            yield Request(poet_url,meta={"item":item},callback=self.parse_poet)
+            yield Request(poet_url,meta={"item": deepcopy(item)},callback=self.parse_poet)
     
     def parse_poet(self,response):
         item = response.meta["item"]
@@ -46,7 +47,7 @@ class Spider(CrawlSpider):
             _item = copy.deepcopy(item)
             _item["poem_name"] = poem_name
             _item["poem_url"] = poem_url
-            yield Request(poem_url,meta={"item":_item},callback=self.parse_poem)
+            yield Request(poem_url,meta={"item": deepcopy(_item)},callback=self.parse_poem)
     
     def parse_poem(self,response):
         _item = response.meta["item"]

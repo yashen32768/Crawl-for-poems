@@ -1,0 +1,100 @@
+\documentclass{scrartcl}
+\usepackage[misc]{ifsym}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xspace}
+\usepackage{enumitem}
+\usepackage{colonequals}
+\usepackage{stmaryrd}
+\usepackage{todonotes}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{appendix}
+\usepackage[vlined,ruled,commentsnumbered,linesnumbered]{algorithm2e}
+\usepackage{enumerate,fullpage,proof}
+% style adjustments
+
+\renewcommand{\arraystretch}{1.5}
+
+% References
+
+\bibliographystyle{plainurl}
+\newcommand{\sref}[1]{{\tiny[#1]}}
+
+% general stuff
+\newcommand{\stackl}[2]{\vtop{\hbox{\strut#1}\hbox{\strut#2}}}
+\newcommand{\stackc}[2]{\vtop{\setbox0\hbox{\strut #1}\copy0\hbox to\wd0{\hss\strut #2\hss}}}
+\newcommand{\stackr}[2]{\vtop{\setbox0\hbox{\strut #1}\copy0\hbox to\wd0{\hss\strut #2}}}
+
+% remember TikZ positions.
+\newcommand{\tmark}[1]{
+  \tikz[remember picture, baseline, inner xsep=0, inner ysep=0.2em]{ \node [anchor=base] (#1) {\vphantom{M}};
+}}%
+
+% listings
+
+\usepackage{listings}
+
+\newcommand*{\lstitem}[1]{
+  \setbox0\hbox{\lstinline{#1}}  
+  \item[\usebox0]  
+  % \item[\hbox{\lstinline{#1}}]
+  \hfill \\
+}
+
+\newcommand{\lst}{\lstinline}
+\lstdefinelanguage{Coq}%
+  {morekeywords={Variable,Inductive,CoInductive,Fixpoint,CoFixpoint,%
+      Definition,Lemma,Theorem,Axiom,Goal,Local,Save,Grammar,Syntax,Intro,%
+      Trivial,Qed,Intros,Symmetry,Simpl,Rewrite,Apply,Elim,Assumption,%
+      Left,Cut,Case,Auto,Unfold,Exact,Right,Hypothesis,Pattern,Destruct,%
+      Constructor,Defined,Fix,Record,Proof,Induction,Hints,Exists,let,in,%
+      Parameter,Split,Red,Reflexivity,Transitivity,if,then,else,Opaque,%
+      Transparent,Inversion,Absurd,Generalize,Mutual,Cases,of,end,Analyze,%
+      AutoRewrite,Functional,Scheme,params,Refine,using,Discriminate,Try,%
+      Require,Load,Import,Scope,Open,Section,End,match,with,Ltac,%
+      Instance,Class,%
+      bind,as,%
+	},%
+   sensitive, %
+   morecomment=[n]{(*}{*)},%
+   morestring=[d]",%
+   literate={=>}{{$\Rightarrow$}}1 {>->}{{$\rightarrowtail$}}2{->}{{$\rightarrow$}}1
+   {forallx}{{$\forall\!\!$}}1
+   %{>>}{\scomp}1
+   %{<>}{{$\neq$}}1 indeed... no.
+  }[keywords,comments,strings]%
+
+\lstset{
+   basicstyle=\ttfamily,
+   keywordstyle=\bfseries\color{blue}
+  }
+\lstset{language=Coq}
+\lstset{columns=fullflexible, keepspaces}
+\usetikzlibrary{arrows,shapes,chains}
+\newtheorem{thm}{Theorem}
+
+\begin{document}
+\title{An online search engine for classical Chinese poems}
+\author{Xiwei Wu \& Ning Yang \& Hui Ma}
+
+\date{}
+\maketitle
+
+\begin{abstract}
+  \textbf{Abstract:} This is a group-based project for Web Search \& Mining. In this project, we implemented a poetry crawler that crawled more than 10,000 poems from https://www.shi-ci.com/ from pre-Qin to modern times, then implemented a search engine that can support a variety of different search requirements, and finally provided a web front-end that can be easily used. 
+
+\textbf{Keywords: Scrapy, , Chinese poems, search engine}
+\end{abstract}
+
+\input{intro}
+\input{scrapy}
+\input{search}
+\input{web}
+\input{concl}
+\bibliography{full_list}
+
+\end{document}
