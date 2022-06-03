@@ -10,7 +10,7 @@ import pandas as pd
 import numpy as np
 from process import *
 
-dict_dynasty_name, dict_poet_name, dict_poem_name, dict_contents, dict_desc, dict_all, df_all, df_dynasty_id, df_dynasty_name, df_poet_name, df_poem_name, df_contents, df_desc = preprocess()
+dict_dynasty_name, dict_poet_name, dict_poem_name, dict_contents, dict_desc, dict_all, df_all, df_dynasty_name, df_poet_name, df_poem_name, df_contents, df_desc = preprocess()
 
 
 
@@ -45,11 +45,16 @@ matrix_binary_contents = make_matrix_binary(num_dict_word, dict_word, dict_conte
 
 
 # query = input("查询！\n")
-# ans = binary_search_in(query, dict_word, matrix_binary_all)
+# ans = query_exact_poet(query, df_all)
 
 # out_list =  vec_to_outlist(ans)
 # outlist_to_out(out_list,df_all)
 
+query = query_zone_input()
 
+ans = query_zone(df_all, dict_word, matrix_binary_poem, matrix_binary_contents,  query)
 
-query_binary(dict_word, matrix_binary_all, df_all)
+out_list =  vec_to_outlist(ans)
+outlist_to_out(out_list,df_all)
+
+# query_binary(dict_word, matrix_binary_all, df_all)
