@@ -11,11 +11,11 @@ import pandas as pd
 import numpy as np
 
 
-
+path_data = './poems/data/'
 length_poem = 54000 
 
 def preprocess():
-    sqlfile = open('.\poems\data\poem.sql','r',encoding='utf8')
+    sqlfile = open(path_data+'poem.sql','r',encoding='utf8')
     # global df_all
     # global df_dynasty_id
     # global df_dynasty_name
@@ -72,20 +72,19 @@ def preprocess():
 
     # df_dynasty_id = pd.DataFrame({'id':list(dict_dynasty_id.keys()),
     #                     'value':list(dict_dynasty_id.values())})
-    df_dynasty_name = pd.DataFrame({'id':list(dict_dynasty_name.keys()),
-                        'value':list(dict_dynasty_name.values())})
-    df_poet_name = pd.DataFrame({'id':list(dict_poet_name.keys()),
-                        'value':list(dict_poet_name.values())})
-    df_poem_name = pd.DataFrame({'id':list(dict_poem_name.keys()),
-                        'value':list(dict_poem_name.values())})
-    df_contents = pd.DataFrame({'id':list(dict_contents.keys()),
-                        'value':list(dict_contents.values())})
-    df_desc = pd.DataFrame({'id':list(dict_desc.keys()),
-                        'value':list(dict_desc.values())})
+    # df_dynasty_name = pd.DataFrame({'id':list(dict_dynasty_name.keys()),
+    #                     'value':list(dict_dynasty_name.values())})
+    # df_poet_name = pd.DataFrame({'id':list(dict_poet_name.keys()),
+    #                     'value':list(dict_poet_name.values())})
+    # df_poem_name = pd.DataFrame({'id':list(dict_poem_name.keys()),
+    #                     'value':list(dict_poem_name.values())})
+    # df_contents = pd.DataFrame({'id':list(dict_contents.keys()),
+    #                     'value':list(dict_contents.values())})
+    # df_desc = pd.DataFrame({'id':list(dict_desc.keys()),
+    #                     'value':list(dict_desc.values())})
 
-    # search_field = [df_dynasty_name, df_poet_name, df_poem_name, df_contents, df_desc]
 
-    return dict_dynasty_name, dict_poet_name, dict_poem_name, dict_contents, dict_desc, dict_all, df_all, df_dynasty_name, df_poet_name, df_poem_name, df_contents, df_desc
+    return dict_poem_name, dict_contents, dict_all, df_all
 
 
 def word_count(dict):
@@ -136,7 +135,7 @@ def word_count(dict):
 def make_matrix_binary(num_dict_word, dict_word, dic):
     
     length_poem = 54000 #有这么多首诗
-    matrix_binary = np.zeros((num_dict_word + 1, length_poem + 1), dtype=int)
+    matrix_binary = np.zeros((num_dict_word + 1, length_poem + 1), dtype=Boolean)
     # dict_binary = {0:np.zeros(length_poem, dtype=int)}
 
 
@@ -203,11 +202,12 @@ def outlist_to_out(ans_list, df_all):
     if ans_list == NULL:
         print('搜索结果为空！')
     for i in ans_list:
+        number = i[0]
         # print(i[0])
-        if flag[i] == False:
+        if flag[number] == False:
             num = num + 1
-            flag[i] = True
-            out = df_all.loc[df_all.id == i]
+            flag[number] = True
+            out = df_all.loc[df_all.id == number]
             print(out)
             # for j in out:
             #     print(j)
@@ -218,40 +218,47 @@ def outlist_to_out(ans_list, df_all):
 def query_seq(query, ans_list, df_all):
     # print('query')
     # print(query)
-    length = len(ans_list)
     ans = []
 
     if ans_list == NULL:
         return
     for i in ans_list:
         out = df_all.loc[df_all.id == i].values[0]
-        if out[2].find(query) >= 0:
-            # print(out[2])
-            ans.append( [i, out[2].find(query)]  )
         if out[3].find(query) >= 0:
-            # print(out[3])
-            ans.append( [i, out[3].find(query)]  )
-        if out[1].find(query) >= 0:
-            # print(out[4])
-            ans.append( [i, out[1].find(query)]  )
+            # print(out[2])
+            ans.append( [i, out[3].find(query), out[7], out[8]]  ) 
         if out[4].find(query) >= 0:
+            # print(out[3])
+            ans.append( [i, out[4].find(query) + 1, out[7], out[8]]  ) #加一个权重,从而保证同名诗人和同名诗歌出现时，诗人在前面，后面同理, 顺序是诗人、诗歌、朝代、内容
+        if out[2].find(query) >= 0:
+            # print(out[4])
+            ans.append( [i, out[2].find(query) + 2, out[7], out[8]]  )
+        if out[5].find(query) >= 0:
             # print(out[4])
             # print(i)
             # print(out[4].find(query))
-            ans.append( [i, out[4].find(query)]  )
+            ans.append( [i, out[5].find(query) + 3, out[7], out[8]]  )
 
-        
-        # print(out)
-        # for x in out:
-        #     print(x)
-        # print(out)
-    # ans = np.array(ans)
-    # print(type(ans))
-    # print(ans)
+    ans.sort(key=lambda x:x[3], reverse=True)
+    ans.sort(key=lambda x:x[2])
     ans.sort(key=lambda x:x[1])
-    # sorted(ans, key=lambda x:(x[1]))
-    # ind = np.lexsort(ans[:,1])
-    # print(ans)
+
+    return ans
+
+def query_seq_noquery(ans_list, df_all): #query 太复杂而不好对其排序
+    # print('query')
+    # print(query)
+    ans = []
+
+    if ans_list == NULL:
+        return
+    for i in ans_list:
+        out = df_all.loc[df_all.id == i].values[0]
+        print(out)
+        ans.append( [i, out[7], out[8]]  )
+
+    ans.sort(key=lambda x:x[3],reverse=True)
+    ans.sort(key=lambda x:x[2])
     return ans
 
 
@@ -264,6 +271,7 @@ def binary_search_in(context, dict_word, matrix_binary, df_all):
         context = context.replace('。','')
         context = context.replace('!','')
         context = context.replace('?','')
+        context = context.replace('nan','')
         out = np.ones(length_poem + 1, dtype=int)
         for (i, word) in enumerate(context):
             # print(word)
@@ -275,8 +283,12 @@ def binary_search_in(context, dict_word, matrix_binary, df_all):
         # print(out)
         for (id, value) in enumerate(out):
             if value == 1:
+                
                 context_in_all = df_all.loc[df_all.id == id].values[0]
-                exist = context_in_all[1].find(context) + context_in_all[2].find(context) + context_in_all[3].find(context) + context_in_all[4].find(context)
+                # print(len(context_in_all))
+                # print(context_in_all)
+                exist = context_in_all[2].find(context) + context_in_all[3].find(context) + context_in_all[4].find(context) + context_in_all[5].find(context)
+                #查询位置+1，似乎是因为读入df的问题
                 if exist == -4:
                     # print(context)
                     # print(context_in_all)
@@ -338,8 +350,8 @@ def query_exact_dynasty(context, df_all):
 #     out_list =  vec_to_outlist(ans)
 #     outlist_to_out(out_list, df)
 
-def query_binary(dict_word, matrix_binary_dynasty, matrix_binary_poet, matrix_binary_poem, matrix_binary_all, df):
-    query = input("请输入查询\n")
+def query_binary(dict_word, matrix_binary_all, df, query):
+    
     if query == NULL:
         print('输入错误！')
     ans = np.ones(length_poem + 1, dtype=int)
@@ -367,8 +379,7 @@ def query_binary(dict_word, matrix_binary_dynasty, matrix_binary_poet, matrix_bi
             
             prev = 0
 
-    out_list =  vec_to_outlist(ans)
-    outlist_to_out(out_list, df)
+    return ans
             
     
 
@@ -467,8 +478,8 @@ def preprocess_pinyin():
     # for item in dict_word_pinyin.items():
     #     print(item)
 
-def query_fuzzy(dict_word_pinyin, dict_pinyin_word, dict_word, matrix_binary_all, df_all):
-    query_word = input('请输入模糊搜索\n')
+def query_fuzzy(dict_word_pinyin, dict_pinyin_word, dict_word, matrix_binary_all, df_all, query_word):
+    
     ans1 = binary_search_in(query_word, dict_word,matrix_binary_all, df_all)
 
     ans = np.ones(length_poem + 1, dtype=int)
@@ -491,14 +502,13 @@ def query_fuzzy(dict_word_pinyin, dict_pinyin_word, dict_word, matrix_binary_all
         ans = binary_search_and(ans, temp)
 
     #要改一下最好，但是怎么改还在想
-    out_list =  vec_to_outlist(ans1) + vec_to_outlist(ans)
-    outlist_to_out(out_list, df_all) #最好改成模糊搜索版本的
+    return ans1, ans
 
 
 
 def rank_determine(df_all):
-    print("???")
-    length = df_all.shape[0]
+    # print("???")
+    # length = df_all.shape[0]
     # for i in range(length):
     #     row = df_all.loc[df_all.id == i].value[0]
     list_weight_poet = [] #诗人的诗越多，权重越重
@@ -508,11 +518,11 @@ def rank_determine(df_all):
         if index % 1000 == 0:
             print(index)
         # print(index, row)
-        row = row_df.values
-        poet_name = row[2]
+        row = row_df.values 
+        poet_name = row[2] #这里不需要+1，因为还没存进去
         
-        cou = df_all.id[df_all.poet_name == poet_name].count()
-        list_weight_poet.append(cou)
+        num_poet = df_all.id[df_all.poet_name == poet_name].count()
+        list_weight_poet.append(num_poet)
 
         len_poem =   len(row[4])
         list_weight_poem.append(len_poem)
@@ -522,12 +532,5 @@ def rank_determine(df_all):
     df_all['weight_poem'] = list_weight_poem
 
     return df_all
-    # df_all = pd.DataFrame({'id':list(dict_poem_name.keys()),
-    #                     # 'dynasty_id':list(dict_dynasty_id.values()),
-    #                     'dynasty_name':list(dict_dynasty_name.values()),
-    #                     'poet_name':list(dict_poet_name.values()),
-    #                     'poem_name':list(dict_poem_name.values()),
-    #                     'contents':list(dict_contents.values()),
-    #                     'desc':list(dict_desc.values())})
 
         
