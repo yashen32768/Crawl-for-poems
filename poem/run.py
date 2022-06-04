@@ -2,10 +2,6 @@
 
 from asyncio.windows_events import NULL
 from encodings import utf_8
-from turtle import xcor
-from matplotlib.pyplot import flag
-from matplotlib.style import context
-import pymysql
 import os
 import re
 import pandas as pd
@@ -48,7 +44,6 @@ def process_data():
     # np.save(path_data+'dict_pinyin_word.npy', dict_pinyin_word)
 
     
-    print(df_all.loc[df_all.id == 36262])
     # print('处理及存储完成')
     return dict_word, matrix_binary_all, matrix_binary_poem, matrix_binary_contents, dict_word_pinyin, dict_pinyin_word
 

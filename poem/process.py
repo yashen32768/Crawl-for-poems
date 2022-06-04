@@ -1,9 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 from asyncio.windows_events import NULL
-from turtle import xcor
 from xmlrpc.client import Boolean
-from matplotlib.style import context
 import pymysql
 import os
 import re
@@ -254,11 +252,11 @@ def query_seq_noquery(ans_list, df_all): #query 太复杂而不好对其排序
         return
     for i in ans_list:
         out = df_all.loc[df_all.id == i].values[0]
-        print(out)
+        # print(out)
         ans.append( [i, out[7], out[8]]  )
 
-    ans.sort(key=lambda x:x[3],reverse=True)
-    ans.sort(key=lambda x:x[2])
+    ans.sort(key=lambda x:x[2],reverse=True)
+    ans.sort(key=lambda x:x[1])
     return ans
 
 
