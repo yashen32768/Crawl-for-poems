@@ -66,7 +66,7 @@ def results():
     query = (request.form['search'])
     method = request.form['method']
     results = []
-    print(query, method)
+    # print(query, method)
 
     if method == '0':
         start_time = time.time()
@@ -74,6 +74,10 @@ def results():
         out_list = vec_to_outlist(ans)
         results = outlist_to_out(out_list, df_all)
         end_time = time.time()
+        # test = results[0]["poem_name"]
+        # test = str(test)
+        # test = len(test)
+        # print(test)
         return render_template("results.html", results=results, query=query, num=len(results), time=end_time-start_time)
 
     elif method == "1":
