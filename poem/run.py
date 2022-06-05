@@ -11,13 +11,10 @@ from process import *
 # import pickle
 
 
-path_data = './poems/data/'
+path_data = './data/'
 
 def process_data():
-
-    dict_poem_name, dict_contents, dict_all, df_all= preprocess()
-
-
+    dict_poem_name, dict_contents, dict_all, df_all = preprocess()
 
     num_dict_word, dict_word = word_count(dict_all)
 
@@ -26,8 +23,6 @@ def process_data():
     # # df_all:id, dynasty_name, poet_name, poem_name, contents, desc, weight_poet, weight_poem
 
     # print(df_all.shape)
-
-
     matrix_binary_all = make_matrix_binary(num_dict_word, dict_word, dict_all)
     # matrix_binary_dynasty = make_matrix_binary(num_dict_word, dict_word, dict_dynasty_name)
     matrix_binary_poem = make_matrix_binary(num_dict_word, dict_word, dict_poem_name)

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.4.0/dist/css/uikit.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+    <!-- UIkit JS -->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.4.0/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.4.0/dist/js/uikit-icons.min.js"></script>
+    <title>Results for {{ query }}</title>
+</head>
+<style>
+*{
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+</style>
+<body>
+    <div class="container">
+    <h1>Results for "{{query}}"</h1>
+    {% if results == [] %}
+        <h3>No documents found, try a different query</h3>
+    {% else %}
+                {% for document in results %}
+                    <div class="uk-flex uk-flex-center">
+                        <div class="uk-card uk-card-hover uk-card-body">
+                            <!-- <h3 class="uk-card-title">{{ document.title }}</h3> -->
+                            <p class="uk-panel uk-panel-box uk-text-truncate">{{document.contents}}</p>
+                            <!-- <details>
+                                    <summary>Read more.</summary>
+                                    <p>{{ document.description }}</p>
+                            </details> -->
+                        </div>
+                    </div>
+            {% endfor %}
+    </div>
+    
+    {% endif %}
+</body>
+</html>

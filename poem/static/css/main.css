@@ -1,0 +1,28 @@
+.container {
+    width: 90%;
+    padding: 1em;
+    margin: auto;
+    margin-left: 20px;
+    position: relative;
+  }
+
+/* .search-model{
+    width: 200px;
+    height: 50px;
+    background-color: rgb(121, 123, 137);
+    text-align: center;
+    line-height: 50px;
+    color: #ffffff;
+    font-size: large;
+    margin-top: 15px;
+} */
+
+.bar{
+    margin: 20px;
+    position: relative;
+    margin-top: 15px;
+}
+
+.uk-card {
+    width: 100%;
+}
