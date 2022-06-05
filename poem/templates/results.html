@@ -19,21 +19,26 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* <script type="text/javascript">
+    var text = document.getElementById('output').innerText;
+    var result = JSON.stringify(JSON.parse(text), null, 2);
+    document.getElementById('out_pre').innerText= result ;
+</script> */
 </style>
-<body>
+<body background="../static/background.png">
     <div class="container">
     <h1>Results for "{{query}}"</h1>
     {% if results == [] %}
-        <h3>No documents found, try a different query</h3>
+        <h3>No poem found, try a different query</h3>
     {% else %}
                 {% for document in results %}
                     <div class="uk-flex uk-flex-center">
                         <div class="uk-card uk-card-hover uk-card-body">
                             <!-- <h3 class="uk-card-title">{{ document.title }}</h3> -->
-                            <p class="uk-panel uk-panel-box uk-text-truncate">{{document.poem_name}}</p>
-                            <p class="uk-panel uk-panel-box uk-text-truncate">{{document.poet_name}}</p>
-                            <p class="uk-panel uk-panel-box uk-text-truncate">{{document.dynasty_name}}</p>
-                            <p class="uk-panel uk-panel-box uk-text-truncate">{{document.contents}}</p>
+                            <p class="poem_name" id="output">{{document.poem_name}}</p>
+                            <p class="poet_name" id="output">{{document.poet_name}}</p>
+                            <p class="dynasty_name" id="output">{{document.dynasty_name}}</p>
+                            <p class="contents" id="output">{{document.contents}}</p>
                             <!-- <details>
                                     <summary>Read more.</summary>
                                     <p>{{ document.description }}</p>

@@ -28,7 +28,22 @@
     position: relative;
     margin-top: 15px;
 }
-
+.poem_name{
+    text-align: center;
+    font-size: large;
+}
+.poet_name{
+    text-align: center;
+    font-size: small;
+}
+.dynasty_name{
+    text-align: center;
+    font-size: small;
+}
+.contents{
+    text-align: center;
+    font-size: medium;
+}
 .uk-card {
     width: 100%;
 }
