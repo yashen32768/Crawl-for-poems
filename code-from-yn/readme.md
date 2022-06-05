@@ -1,6 +1,7 @@
 保留一份不接网页的最终版本后端代码
 （加上了朝代判别，如果觉得不完整可以再加）
 
+```python
 def judge_dynasty(query):
     ans = query
     if query == '秦' or query == '秦朝' :
@@ -27,3 +28,4 @@ def judge_dynasty(query):
         ans = '近现代' 
 
     return ans
+```
