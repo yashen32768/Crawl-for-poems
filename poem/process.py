@@ -193,22 +193,21 @@ def vec_to_outlist(vec0):
 
 #按顺序这个东西其实并不太好搞，因为有AND OR NOT，所以这里删掉
 def outlist_to_out(ans_list, df_all):
-    # ans_list = query_seq(query, ans_list, df_all)
-    # print(ans_list)
     flag = np.zeros(length_poem + 1, dtype=Boolean)
     num = 0
     if ans_list == NULL:
         print('搜索结果为空！')
+    print(ans_list)
     for i in ans_list:
-        number = i[0]
+        number = i
         # print(i[0])
         if flag[number] == False:
             num = num + 1
             flag[number] = True
             out = df_all.loc[df_all.id == number]
             print(out)
-            # for j in out:
-            #     print(j)
+
+
     print('共搜到诗的数目：')
     print(num)
 
@@ -241,7 +240,10 @@ def query_seq(query, ans_list, df_all):
     ans.sort(key=lambda x:x[2])
     ans.sort(key=lambda x:x[1])
 
-    return ans
+    ans_num = []
+    for i in ans:
+        ans_num.append(ans[0])
+    return ans_num
 
 def query_seq_noquery(ans_list, df_all): #query 太复杂而不好对其排序
     # print('query')
@@ -257,7 +259,11 @@ def query_seq_noquery(ans_list, df_all): #query 太复杂而不好对其排序
 
     ans.sort(key=lambda x:x[2],reverse=True)
     ans.sort(key=lambda x:x[1])
-    return ans
+
+    ans_num = []
+    for i in ans:
+        ans_num.append(ans[0])
+    return ans_num
 
 
 def binary_search_in(context, dict_word, matrix_binary, df_all):
