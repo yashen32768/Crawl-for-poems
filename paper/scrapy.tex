@@ -21,7 +21,7 @@ Our crawler starts with the pages belonging to different dynasties. By analyzing
           yield Request(url,meta={"item":k},callback=self.parse_dynasty)
 \end{lstlisting}
 
-For each poem, we collect dynasty, poet name, poem name, contents, poet description and the associated page url. 
+For each poem, we collect dynasty, poet name, poem name, contents, poet description and the associated page url.
 \begin{lstlisting}
   class PoemItem(scrapy.Item):
     dynasty = scrapy.Field()
@@ -34,6 +34,6 @@ For each poem, we collect dynasty, poet name, poem name, contents, poet descript
     crawl_url = scrapy.Field()
 \end{lstlisting}
 
-Based on these data, we created the table via mysql, and the relevant steps can be referred to the poem/READMD.md file. Finally, we output the data in SQL format for later use. You can see our dataset as poem/data/poem.sql.  
+Based on these data, we created the table via mysql, and the relevant steps can be referred to the poem/READMD.md file. Finally, we output the data in SQL format for later use. You can see our dataset as poem/data/poem.sql.
 
 Due to the problem of website data, we need to process the poems obtained by the crawlers, such as the unification of Chinese and English commas, the addition of missing content in the body, and the appearance of ellipses due to the excessive length of titles. Here we would like to mention the ellipsis in the title, we found that among the more than 50,000 ancient poems we collected, there are more than 1,200 poems with ellipsis in the title, most of them are Tang poems. And we found that the titles of these poems existed in most of the websites in the form of containing ellipses, so we also dealt with only some of the poems for which the full names could be found.

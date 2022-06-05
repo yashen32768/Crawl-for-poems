@@ -1,12 +1,154 @@
 \section{Search Engine} \label{sec:search}
 
+We use Python to build the entire search engine, and a series of data structures, such as DataFrame are used to build our entire search engine.
+
 \subsection{Overall Design}
+
+The entire search process is as follows: first, based on the SQL database, we built several dictionaries and stored the entire SQL database into a DATAframe \lstinline{df_all}, along with the rank information we decided. After a series of processes, our engine initialization is complete and enter the query phase.
+
+After asking user to get the query type and query content, we process the content according to the query type, and then make the corresponding query within \lstinline{df_all}, return the results for output, and ask the user whether to continue the query. We will describe how to implement these steps in the following sections.
+
+All the codes are in\textbf{ 'process.py'} and \textbf{'run.py'}.
+
+\subsection{Data Process}
+
+First, after reading into the database, we stored it in the DataFrame \lstinline{df_all} for easy processing, and the attributes are as previously mentioned : dynasty, poet name, poem name, contents, poet description. Also, for subsequent zone-specific queries, we store two dictionaries of poem name and contents.
+
+Then, for Boolean search, we construct a term dictionary. And consider the complexity of the grammar of Chinese ancient poetry, we decide to think a single word as a term. According to this idea, we construct the term dictionary \lstinline{dict_word}. Based on the dictionary, we process and obtain a 0-1 vector for each ancient poem and construct the term-poem incidence matrix, and the matrix is  \lstinline{matrix_binary_all}. In each vector, 1 means the word  appears in the poem corresponding to this position and 0 means not.
+
+Finally, we appended two sets of ranking values to each ancient poem according to the ranking we thought about and added them to \lstinline{df_all}. The entire data processing process is completed.
+
 
 \subsection{Boolean Search}
 
+The user input a string include search keys and operations, 
+for each search key, we convert it to a 0-1 vector based on the dict we got before. For multiple single words inside the search key, we get all the corresponding vectors and then do \lstinline{AND} on them. Then we check each result we get to make sure that the search key is actually present in the result, not scattered throughout the poem. 
+
+Then for each search key, we perform the corresponding \lstinline{AND, OR, NOT} operation, and get the final result vector. And, unlike the documentation requirements,  we have included dynasties and authors in the search
+
+
+And finally, all search methods, including this one, will end up with a vector, and then the \lstinline{vec_to_outlist} and  \lstinline{outlist_to_out} functions will be called to output the corresponding poems. This step is not repeated in the following search.
+
+Here are three examples of searches.
+
+
+\begin{figure*}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{figure/boolean-1.png}
+\caption{Boolean Search example 1: search with AND. We search '白居易 AND 琵琶行', and return 1 result, which is correct.}
+\label{search-1}
+\end{figure*}
+
+\begin{figure*}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{figure/boolean-or.png}
+\caption{Boolean Search example 2: search with OR. We search '床前明月光 OR 汉皇重色', and return 1 result, which is correct.}
+\label{search-2}
+\end{figure*}
+
+\begin{figure*}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{figure/not-1.png}
+\label{search-3}
+\end{figure*}
+
+\begin{figure*}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{figure/not-2.png}
+\caption{Boolean Search example 3: search with NOT. We search '张若虚', and return 2 result; if we search '张若虚 NOT 春江花月夜', and we will get 1 result, the specified item is excluded from the search results. }
+\label{search-4}
+\end{figure*}
+
+
 \subsection{Zone-specific Search}
+
+The dynasty, author，title and content are entered in order, or keep empty. For enumerable attributes like author and dynasty, the returned vector only contain those exactly match the query, where we use the query function of DataFrame, 
+
+\begin{lstlisting}
+    list = df_all.loc[df_all.dynasty_name == dynasty]
+    list = df_all.id[df_all.poet_name == author]
+\end{lstlisting}
+
+And we use Boolean search on title and content. At last, we do \lstinline{AND} on the four returned vectors to get the final out, empty set as all-1 vector.
+
+The example is shown in fig\ref{search-5} and fig\ref{search-6}.
+
+\begin{figure*}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{figure/zone-1.png}
+\caption{Zone-specific Search example 1: We search '江城子' as title and '唐代' as dynasty, and return 6 results, all meet the requirements.}
+\label{search-5}
+\end{figure*}
+
+\begin{figure*}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{figure/zone-2-103.png}
+\caption{Zone-specific Search example 2: We search '江城子' as title and '宋代' as dynasty, and we can see that there are 103 results, and all meet the requirements.}
+\label{search-6}
+\end{figure*}
+
+
 
 \subsection{Pinyin-based Tolerant Search}
 
+To handle the fuzzy search based on pinyin, we created a table of Chinese characters to pinyin correspondence, which can be found in poem/data/pinyin.txt. For every word of the target to be searched, we will do single word substitution according to the pinyin, and  do a Boolean search, then connect each different returned vector with \lstinline{OR}.
+
+Finally, we use \lstinline{AND} to link all the single word vectors and output.
+
+Such a search has several advantages and several disadvantages, the advantages of such search method is very powerful, as long as the pin-yin is right, it will definitely return the correct result, but there are corresponding cost. The number of results returned may be large, and the search time may be longer, there is no guarantee that the results the user wants will be at the top of the list. It may be possible to optimize further with a fuzzy search rank, but the search will take longer. Taking all things into account, we decided to keep this search the way it is now.
+
+The example is shown in fig\ref{search-7}.
+
+
+\begin{figure*}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{figure/fuzzy-example.png}
+\caption{Fuzzy Search example: We search '绿杨阴里白沙低' , with correct '堤' is changed to the homophonic '低', and we can see that expected correct result is returned.}
+\label{search-7}
+\end{figure*}
+
 \subsection{Ranked Search}
 
+First, the search result is based on Boolean search, but here we no longer support logical operations. We have thought and discussed, and have come up with some ranking bases. One caveat is that poetry ordering is very subjective and varies from person, so we do not guarantee that our ordering will be the best in all cases. Here are some thoughts:
+
+Intuitively, for the same content, it appears at the beginning or at the end, we usually prefer the former;
+
+For the same content, if it appears in the poet, the title, the dynasty and the content of the poem, we want the poet is the first appears in the results, the title second, and the dynasty and the content.
+
+For the fame of the poet, since there is no necessarily correct measure method, we used a more intuitive measure: the  more poems this poet had, the more likely he was famous. For those poets who are very famous but have few works now, this may not be the right standard, but for most poets, this is the right standard.
+
+And, for users, they always prefer short content to lengthy content, so we will put shorter poems in front.
+
+Based on these idea, we measured each poem the number of  poems retained by the author and the length of the poem, and add them to \lstinline{df_all}. This process is very time-consuming(about 2-3 minutes), so we store the \lstinline{df_all} as a csv so that we don't have to wait too long after one initialization.
+
+Before the final output, we use \lstinline{query_seq} to do these rank, first we sort the poems according to content's length, then we sort the poems in reverse order according to the the number of poems retained by the author, at last we sort the poems according to location where the query appears.
+
+The more the author's work and the shorter the poem, the earlier the query is matched, the more this result will be in front. 
+
+For the other queries, since the query is composite, we only sorted the poem length and the number of poems, and the function is \lstinline{query_seq_noquery}.
+
+By the way, because of the presence of a large number of anonymous poets(“无名氏”), in order to ensure that they do not unduly affect the ranking of normal poets we manually weighted their number of poems to 1.
+
+
+The example is shown in \ref{search-8}, we use same key to get different result return order.
+
+
+\begin{figure*}[h]
+\centering
+\subfigure[1]{
+\begin{minipage}{0.8\linewidth}
+\centering
+\includegraphics[width=0.8\textwidth]{figure/rank-1.png}
+\end{minipage}
+}
+
+\subfigure[2]
+{
+\begin{minipage}{0.8\linewidth}
+\centering
+\includegraphics[width=0.8\textwidth]{figure/rank-2.png}
+\end{minipage}
+}
+\caption{Rank Search example: we search '李白' in Boolean Search and in Rank Search, and we can find that, in Boolean Search, The first result is not a poem written by 李白, while for Rank Search, we can get it in the first result.}
+\label{search-8}
+\end{figure*}
