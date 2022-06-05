@@ -70,8 +70,8 @@ def results():
     # try:
     query = (request.form['search'])
     method = request.form['method']
-    if method == 1 or method == 4:
-        zone = request.form['zone']
+    if method == "1" or method == "4":
+        zone = int(request.form['zone'])
     results = []
     print(query, method)
 
@@ -84,11 +84,13 @@ def results():
         return render_template("results.html", results=results, query=query, num=len(results), time=end_time-start_time)
 
     elif method == "1":
+        # print(type(zone))
         start_time = time.time()
         z_query = [0, 0, 0, 0]
         z_query[zone] = query
+        # print(query, z_query)
         ans = query_zone(df_all, dict_word, matrix_binary_poem,
-                            matrix_binary_contents,  z_query)
+                         matrix_binary_contents,  z_query)
         out_list = vec_to_outlist(ans)
         results = outlist_to_out(out_list, df_all)
         end_time = time.time()
@@ -118,9 +120,10 @@ def results():
 
     elif method == "4":
         start_time = time.time()
-        query = query_zone_input()
+        z_query = [0, 0, 0, 0]
+        z_query[zone] = query
         ans = query_zone(df_all, dict_word, matrix_binary_poem,
-                            matrix_binary_contents, query)
+                         matrix_binary_contents, query)
         out_list = vec_to_outlist(ans)
         out_list = query_seq_noquery(out_list, df_all)
         results = outlist_to_out(out_list, df_all)

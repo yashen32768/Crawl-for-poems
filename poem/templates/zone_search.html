@@ -92,33 +92,28 @@ p {
             <form class="search-bar",  method="POST", action="/results", autocomplete="off">
                 <div class="bar">
                     <!-- <input id='myInput', type="text" placeholder="唐" name="search"> -->
-                    <input id='myInput' , type="text" value="唐代" name="search">
+                    <input id='myInput' , type="text" value="李白" name="search">
                 </div>
                 <input type="submit"></button>
                 <div class="buttons">
                     <div class="search-model">
                         <p class="tips">Please select search zone</p>
-                        <input type="radio" name="zone" id="dynasty" value=0 checked="checked">
+                        <input type="radio" name="zone" id="dynasty" value=0>
                         <label for="boolean" class="model_choice">Dynasty</label>
-                        <input type="radio" name="zone" id="poet_name" value=1>
+                        <input type="radio" name="zone" id="poet_name" value=1 checked="checked">
                         <label for="boolean" class="model_choice">Poet_name</label>
                         <input type="radio" name="zone" id="poem_name" value=2>
                         <label for="boolean" class="model_choice">Poem_name</label>
                         <input type="radio" name="zone" id="content" value=3>
                         <label for="boolean" class="model_choice">Content</label>
                     </div>
-                    <!-- <select class="search-model">
-                        <option value="0">Binary</option>                   
-                        <option value="1">Zone</option>                 
-                        <option value="2">Fuzzy</option>                  
-                        <option value="3">Ranked</option>
-                        <option value="4">Ranked Zone</option>
-                    </select> -->
-                    <!-- <div class="query-exp">
-                        <br>
-                        <input type="checkbox" name="exp" id="exp" value=1>
-                        <label for="exp">Click to enable query expansion</label>
-                    </div> -->
+                    <div class="search-model">
+                        <p class="tips">Please select search method</p>
+                        <input type="radio" name="method" id="zone" value="1" checked="checked">
+                        <label for="boolean" class="model_choice">Zone</label>
+                        <input type="radio" name="method" id="ranked zone" value="4">
+                        <label for="boolean" class="model_choice">Ranked Zone</label>
+                    </div>
                 </div>
             </form>
         </div>
