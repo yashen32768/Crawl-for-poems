@@ -36,46 +36,31 @@
 }}%
 
 % listings
-
 \usepackage{listings}
-
-\newcommand*{\lstitem}[1]{
-  \setbox0\hbox{\lstinline{#1}}  
-  \item[\usebox0]  
-  % \item[\hbox{\lstinline{#1}}]
-  \hfill \\
+\usepackage{color}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{frame=tb,
+  language=Python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=left,%设置行号位置none不显示行号
+  %numberstyle=\tiny\courier, %设置行号大小
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  escapeinside=``,%逃逸字符(1左面的键)，用于显示中文例如在代码中`中文...`
+  tabsize=4,
+  extendedchars=false %解决代码跨页时，章节标题，页眉等汉字不显示的问题
 }
 
-\newcommand{\lst}{\lstinline}
-\lstdefinelanguage{Coq}%
-  {morekeywords={Variable,Inductive,CoInductive,Fixpoint,CoFixpoint,%
-      Definition,Lemma,Theorem,Axiom,Goal,Local,Save,Grammar,Syntax,Intro,%
-      Trivial,Qed,Intros,Symmetry,Simpl,Rewrite,Apply,Elim,Assumption,%
-      Left,Cut,Case,Auto,Unfold,Exact,Right,Hypothesis,Pattern,Destruct,%
-      Constructor,Defined,Fix,Record,Proof,Induction,Hints,Exists,let,in,%
-      Parameter,Split,Red,Reflexivity,Transitivity,if,then,else,Opaque,%
-      Transparent,Inversion,Absurd,Generalize,Mutual,Cases,of,end,Analyze,%
-      AutoRewrite,Functional,Scheme,params,Refine,using,Discriminate,Try,%
-      Require,Load,Import,Scope,Open,Section,End,match,with,Ltac,%
-      Instance,Class,%
-      bind,as,%
-	},%
-   sensitive, %
-   morecomment=[n]{(*}{*)},%
-   morestring=[d]",%
-   literate={=>}{{$\Rightarrow$}}1 {>->}{{$\rightarrowtail$}}2{->}{{$\rightarrow$}}1
-   {forallx}{{$\forall\!\!$}}1
-   %{>>}{\scomp}1
-   %{<>}{{$\neq$}}1 indeed... no.
-  }[keywords,comments,strings]%
-
-\lstset{
-   basicstyle=\ttfamily,
-   keywordstyle=\bfseries\color{blue}
-  }
-\lstset{language=Coq}
-\lstset{columns=fullflexible, keepspaces}
-\usetikzlibrary{arrows,shapes,chains}
 \newtheorem{thm}{Theorem}
 
 \begin{document}
@@ -86,7 +71,7 @@
 \maketitle
 
 \begin{abstract}
-  \textbf{Abstract:} This is a group-based project for Web Search \& Mining. In this project, we implemented a poetry crawler that crawled more than 10,000 poems from https://www.shi-ci.com/ from pre-Qin to modern times, then implemented a search engine that can support a variety of different search requirements, and finally provided a web front-end that can be easily used. 
+  \textbf{Abstract:} This is a group-based project for Web Search \& Mining. In this project, we implemented a poetry crawler that crawled more than 10,000 poems from \href{https://www.shi-ci.com/}{中华诗词网} from pre-Qin to modern times, then implemented a search engine that can support a variety of different search requirements, and finally provided a web front-end that can be easily used. 
 
 \textbf{Keywords: Scrapy, Chinese poems, search engine}
 \end{abstract}
@@ -96,6 +81,5 @@
 \input{search}
 \input{web}
 \input{concl}
-\bibliography{full_list}
 
 \end{document}
