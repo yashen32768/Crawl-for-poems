@@ -243,8 +243,8 @@ def query_seq(query, ans_list, df_all):
             # print(out[4].find(query))
             ans.append([i, out[5].find(query) + 3, out[7], out[8]])
 
-    ans.sort(key=lambda x: x[3], reverse=True)
-    ans.sort(key=lambda x: x[2])
+    ans.sort(key=lambda x: x[3])
+    ans.sort(key=lambda x: x[2], reverse=True)
     ans.sort(key=lambda x: x[1])
 
     ans_num = []
@@ -265,8 +265,8 @@ def query_seq_noquery(ans_list, df_all):  # query 太复杂而不好对其排序
         # print(out)
         ans.append([i, out[7], out[8]])
 
-    ans.sort(key=lambda x: x[2], reverse=True)
-    ans.sort(key=lambda x: x[1])
+    ans.sort(key=lambda x: x[2])
+    ans.sort(key=lambda x: x[1], reverse=True)
 
     ans_num = []
     for i in ans:
@@ -526,8 +526,12 @@ def rank_determine(df_all):
         # print(index, row)
         row = row_df.values
         poet_name = row[2]  # 这里不需要+1，因为还没存进去
+        noname = '无名氏'
 
-        num_poet = df_all.id[df_all.poet_name == poet_name].count()
+        if poet_name.find(noname) >= 0:
+             num_poet = 1
+        else:
+            num_poet = df_all.id[df_all.poet_name == poet_name].count()
         list_weight_poet.append(num_poet)
 
         len_poem = len(row[4])
