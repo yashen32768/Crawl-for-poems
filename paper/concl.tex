@@ -1,11 +1,11 @@
 \section{Thoughts} \label{sec:concl}
 During the implementation of this project, we tried many different websites, but due to the continuous development of crawlers and anti-crawlers, many websites have adopted the sweep copy or login to block crawlers. For general considerations, we have chosen this site to crawl. And Scrapy's sophisticated crawler template saves us a lot of time, we only need to do simple processing through the web code to get the data we need. 
 
-While doing pre-processing of the poem names and body, we found some poems with names containing Chinese characters not supported by utf8, so we decisively discarded them. Therefore, we can see that many poems contain vacant parts like * or "$\square$", but of course, this is also partly due to the missing words in the process of circulation. Also, we found that the body of the poems on this site contained an error message like "以上作品共五首", but we didn't deal with them all because there were too many of them.
+While doing pre-processing of the poem names and body, we found some poems with names containing Chinese characters not supported by utf8, so we decisively discarded them. Therefore, we can see that many poems contain vacant parts like * or "$\square$", but of course, this is also partly due to the missing words in the process of circulation. Also, we found that the body of the poems on this site contained an error message like "以上作品共五首", which creates a tremendous amount of work for us.
 
 As for search engine, we can have more improvements for fuzzy search, such as improving the pinyin database to match only the common passwords or misspellings in ancient poems to reduce the search space; on the other hand, we can also convert the final result into pinyin and combine it with the searched pinyin to sort the results. And for rank search, we can manually add a weight to those authors with few works but a strong reputation to get their results further up the list, for example, 张若虚 and 《春江花月夜》。
 
 
-As for web, xxxxxxxxxx.
+% As for web, xxxxxxxxxx.
 
 You can see our codes and dataset on the Github \href{https://github.com/yashen32768/Crawl-for-poems}{Crawl-for-poems}.
