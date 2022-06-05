@@ -266,13 +266,8 @@ def query_seq_noquery(ans_list, df_all):  # query 太复杂而不好对其排序
         # print(out)
         ans.append([i, out[7], out[8]])
 
-<<<<<<< HEAD
     ans.sort(key=lambda x: x[2], reverse=True)
     ans.sort(key=lambda x: x[1])
-=======
-    ans.sort(key=lambda x:x[2],reverse=True)
-    ans.sort(key=lambda x:x[1])
->>>>>>> af7bc2585e3d3abab2ea05927ea7c3fe245452b8
 
     ans_num = []
     for i in ans:
