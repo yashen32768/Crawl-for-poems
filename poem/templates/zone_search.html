@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <title>Poem Search</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script type= 'text/javascript', scr= "../static/index.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.js"></script>
+</head>
+<!-- <script>
+
+    $(window).keypress(function (e) {
+            if (e.key === ' ' || e.key === 'Spacebar') {
+                // ' ' is standard, 'Spacebar' was used by IE9 and Firefox < 37
+                //e.preventDefault()
+                var query = document.getElementById("myInput").value
+                console.log(query)
+                $.post('/results',{"query":query})
+            }            
+        });
+
+</script> -->
+<style>
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+div.buttons {
+    text-align: center;
+}
+
+/* Style the search field */
+form.search-bar input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+  margin-bottom: 15px;
+}
+
+/* Style the submit button */
+form.search-bar input[type=submit] {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  background: #3778ad;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none; /* Prevent double borders */
+  cursor: pointer;
+  position: relative;
+  margin-bottom: 15px;
+}
+
+form.search-bar input[type=submit]:hover {
+  background: #9eb2c3;
+}
+
+/* Clear floats */
+form.search-bar::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+img {
+    display: block;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+p {
+    font-weight:bold;
+}
+</style>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="../static/photo.png" alt="logo">
+        </div>
+        <div class="search">
+            <form class="search-bar",  method="POST", action="/results", autocomplete="off">
+                <div class="bar">
+                    <!-- <input id='myInput', type="text" placeholder="唐" name="search"> -->
+                    <input id='myInput' , type="text" value="唐代" name="search">
+                </div>
+                <input type="submit"></button>
+                <div class="buttons">
+                    <div class="search-model">
+                        <p class="tips">Please select search zone</p>
+                        <input type="radio" name="zone" id="dynasty" value=0 checked="checked">
+                        <label for="boolean" class="model_choice">Dynasty</label>
+                        <input type="radio" name="zone" id="poet_name" value=1>
+                        <label for="boolean" class="model_choice">Poet_name</label>
+                        <input type="radio" name="zone" id="poem_name" value=2>
+                        <label for="boolean" class="model_choice">Poem_name</label>
+                        <input type="radio" name="zone" id="content" value=3>
+                        <label for="boolean" class="model_choice">Content</label>
+                    </div>
+                    <!-- <select class="search-model">
+                        <option value="0">Binary</option>                   
+                        <option value="1">Zone</option>                 
+                        <option value="2">Fuzzy</option>                  
+                        <option value="3">Ranked</option>
+                        <option value="4">Ranked Zone</option>
+                    </select> -->
+                    <!-- <div class="query-exp">
+                        <br>
+                        <input type="checkbox" name="exp" id="exp" value=1>
+                        <label for="exp">Click to enable query expansion</label>
+                    </div> -->
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
