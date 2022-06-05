@@ -27,21 +27,20 @@
 </style>
 <body background="../static/background.png">
     <div class="container">
-    <h1>Results for "{{query}}"</h1>
+    <h1>{{num}} results for "{{query}}, takes {{time}}s"</h1>
     {% if results == [] %}
         <h3>No poem found, try a different query</h3>
     {% else %}
-                {% for document in results %}
+                {% for res in results %}
                     <div class="uk-flex uk-flex-center">
                         <div class="uk-card uk-card-hover uk-card-body">
-                            <!-- <h3 class="uk-card-title">{{ document.title }}</h3> -->
-                            <p class="poem_name" id="output">{{document.poem_name}}</p>
-                            <p class="poet_name" id="output">{{document.poet_name}}</p>
-                            <p class="dynasty_name" id="output">{{document.dynasty_name}}</p>
-                            <p class="contents" id="output">{{document.contents}}</p>
+                            <p class="poem_name" id="output">{{res.poem_name}}</p>
+                            <p class="poet_name" id="output">{{res.poet_name}}</p>
+                            <p class="dynasty_name" id="output">{{res.dynasty_name}}</p>
+                            <p class="contents" id="output">{{res.contents}}</p>
                             <!-- <details>
                                     <summary>Read more.</summary>
-                                    <p>{{ document.description }}</p>
+                                    <p>{{ res.description }}</p>
                             </details> -->
                         </div>
                     </div>
