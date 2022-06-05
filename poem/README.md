@@ -69,7 +69,7 @@ set m.dynasty_id=q.dynasty_id
 ```
 修改config/db_global.json下 password以后运行爬虫
 
-scrapy crawl crawler_tangshi
+scrapy crawl poems
 ```
 # 运行网页
 ```

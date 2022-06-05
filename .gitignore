@@ -39,3 +39,5 @@ out
 *.aux
 *.synctex.gz
 
+#vscode
+.vscode

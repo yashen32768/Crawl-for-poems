@@ -4,7 +4,7 @@
             "rds-local_spider": {
                 "host": "localhost",
                 "user": "root",
-                "password": "yashen990517",
+                "password": "123456",
                 "db": "spider",
                 "port": 3306,
                 "charset": "utf8"

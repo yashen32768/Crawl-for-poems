@@ -1,2 +1,39 @@
-\section{Data Crawling and Preprocessing} \label{sec:crawl}
+\section{Data Crawling} \label{sec:crawl}
 
+We use Scrapy for crawling data and SQL for storing data. Here we use \href{https://www.shi-ci.com/}{中华诗词网} as our poem source.
+Our crawler starts with the pages belonging to different dynasties. By analyzing the web code we get the relevant information.
+\begin{lstlisting}
+  def start_requests(self):
+      dynastys = {
+          "先秦": "https://www.shi-ci.com/dynasty/72057594037927936", 
+          "汉代": "https://www.shi-ci.com/dynasty/144115188075855872", 
+          "三国两晋": "https://www.shi-ci.com/dynasty/216172782113783808", 
+          "南北朝": "https://www.shi-ci.com/dynasty/288230376151711744", 
+          "隋代": "https://www.shi-ci.com/dynasty/360287970189639680", 
+          "唐代": "https://www.shi-ci.com/dynasty/432345564227567616",
+          "宋代": "https://www.shi-ci.com/dynasty/504403158265495552", 
+          "元代": "https://www.shi-ci.com/dynasty/576460752303423488", 
+          "明代": "https://www.shi-ci.com/dynasty/648518346341351424",
+          "清代": "https://www.shi-ci.com/dynasty/720575940379279360", 
+          "近现代": "https://www.shi-ci.com/dynasty/792633534417207296",
+        }
+      for k,url in dynastys.items():
+          yield Request(url,meta={"item":k},callback=self.parse_dynasty)
+\end{lstlisting}
+
+For each poem, we collect dynasty, poet name, poem name, contents, poet description and the associated page url. 
+\begin{lstlisting}
+  class PoemItem(scrapy.Item):
+    dynasty = scrapy.Field()
+    poet_name = scrapy.Field()
+    poet_url = scrapy.Field()
+    poem_name = scrapy.Field()
+    poem_url = scrapy.Field()
+    contents = scrapy.Field()
+    poet_desc = scrapy.Field()
+    crawl_url = scrapy.Field()
+\end{lstlisting}
+
+Based on these data, we created the table via mysql, and the relevant steps can be referred to the poem/READMD.md file. Finally, we output the data in SQL format for later use. You can see our dataset as poem/data/poem.sql.  
+
+Due to the problem of website data, we need to process the poems obtained by the crawlers, such as the unification of Chinese and English commas, the addition of missing content in the body, and the appearance of ellipses due to the excessive length of titles. Here we would like to mention the ellipsis in the title, we found that among the more than 50,000 ancient poems we collected, there are more than 1,200 poems with ellipsis in the title, most of them are Tang poems. And we found that the titles of these poems existed in most of the websites in the form of containing ellipses, so we also dealt with only some of the poems for which the full names could be found.
