@@ -194,8 +194,12 @@ def outlist_to_out(ans_list, df_all):
     num = 0
     if ans_list == NULL:
         print('搜索结果为空！')
+<<<<<<< HEAD
     # print(ans_list)
     results = []
+=======
+    print(ans_list)
+>>>>>>> af7bc2585e3d3abab2ea05927ea7c3fe245452b8
     for i in ans_list:
         number = i
         # print(i[0])
@@ -203,6 +207,7 @@ def outlist_to_out(ans_list, df_all):
             num = num + 1
             flag[number] = True
             out = df_all.loc[df_all.id == number]
+<<<<<<< HEAD
             print(out)        
             res = {"dynasty_name": out.dynasty_name,
                    "poet_name": out.poet_name, 
@@ -210,6 +215,10 @@ def outlist_to_out(ans_list, df_all):
                    "contents": out.contents}
             print(res)
             results.append(res)
+=======
+            print(out)
+
+>>>>>>> af7bc2585e3d3abab2ea05927ea7c3fe245452b8
 
     print('共搜到诗的数目：')
     print(num)
@@ -263,8 +272,13 @@ def query_seq_noquery(ans_list, df_all):  # query 太复杂而不好对其排序
         # print(out)
         ans.append([i, out[7], out[8]])
 
+<<<<<<< HEAD
     ans.sort(key=lambda x: x[2], reverse=True)
     ans.sort(key=lambda x: x[1])
+=======
+    ans.sort(key=lambda x:x[2],reverse=True)
+    ans.sort(key=lambda x:x[1])
+>>>>>>> af7bc2585e3d3abab2ea05927ea7c3fe245452b8
 
     ans_num = []
     for i in ans:
