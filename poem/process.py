@@ -205,14 +205,13 @@ def outlist_to_out(ans_list, df_all):
             num = num + 1
             flag[number] = True
             out = df_all.loc[df_all.id == number]
-            print(out)        
-            res = {"dynasty_name": out.dynasty_name,
-                   "poet_name": out.poet_name, 
-                   "poem_name": out.poem_name,
-                   "contents": out.contents}
+            # print(out)        
+            res = {"dynasty_name": out.dynasty_name.values,
+                   "poet_name": out.poet_name.values, 
+                   "poem_name": out.poem_name.values,
+                   "contents": out.contents.values}
             print(res)
             results.append(res)
-            print(out)
 
     print('共搜到诗的数目：')
     print(num)
@@ -262,7 +261,7 @@ def query_seq_noquery(ans_list, df_all):  # query 太复杂而不好对其排序
     if ans_list == NULL:
         return
     for i in ans_list:
-        out = df_all.loc[df_all.id == i].values[0]
+        out = df_all.loc[df_all.id == i].values[0] 
         # print(out)
         ans.append([i, out[7], out[8]])
 
