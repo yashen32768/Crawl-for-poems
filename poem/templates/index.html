@@ -40,6 +40,7 @@ form.search-bar input[type=text] {
   float: left;
   width: 80%;
   background: #f1f1f1;
+  margin-bottom: 15px;
 }
 
 /* Style the submit button */
@@ -47,17 +48,18 @@ form.search-bar input[type=submit] {
   float: left;
   width: 20%;
   padding: 10px;
-  background: #2196F3;
+  background: #3778ad;
   color: white;
   font-size: 17px;
   border: 1px solid grey;
   border-left: none; /* Prevent double borders */
   cursor: pointer;
   position: relative;
+  margin-bottom: 15px;
 }
 
 form.search-bar input[type=submit]:hover {
-  background: #0b7dda;
+  background: #9eb2c3;
 }
 
 /* Clear floats */
@@ -90,17 +92,17 @@ p {
                 <input type="submit"></button>
                 <div class="buttons">
                     <div class="search-model">
-                        <p>Please select search method</p>
-                        <input type="radio" name="method" id="binary" value="0">
-                        <label for="boolean">Binary</label>
+                        <p class="tips">Please select search method</p>
+                        <input type="radio" name="method" id="binary" value="0" checked="checked">
+                        <label for="boolean" class="model_choice">Binary</label>
                         <input type="radio" name="method" id="zone" value="1">
-                        <label for="boolean">Zone</label>
+                        <label for="boolean" class="model_choice">Zone</label>
                         <input type="radio" name="method" id="fuzzy" value="2">
-                        <label for="boolean">Fuzzy</label>
+                        <label for="boolean" class="model_choice">Fuzzy</label>
                         <input type="radio" name="method" id="ranked" value="3">
-                        <label for="boolean">Ranked</label>
+                        <label for="boolean" class="model_choice">Ranked</label>
                         <input type="radio" name="method" id="ranked zone" value="4">
-                        <label for="boolean">Ranked Zone</label>
+                        <label for="boolean" class="model_choice">Ranked Zone</label>
                     </div>
                     <!-- <select class="search-model">
                         <option value="0">Binary</option>                   
@@ -109,13 +111,6 @@ p {
                         <option value="3">Ranked</option>
                         <option value="4">Ranked Zone</option>
                     </select> -->
-                    <!-- <div class="search-collection">
-                        <p>Please select collection</p>
-                        <input type="radio" name="collection" id="uottawa" value="uottawa">
-                        <label for="uottawa">University of Ottawa</label>
-                        <input type="radio" name="collection" id="reuters" value="reuters">
-                        <label for="reuters">Reuters</label>
-                    </div> -->
                     <!-- <div class="query-exp">
                         <br>
                         <input type="checkbox" name="exp" id="exp" value=1>
