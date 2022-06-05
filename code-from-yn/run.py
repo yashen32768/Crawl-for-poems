@@ -56,8 +56,6 @@ dict_word, matrix_binary_all, matrix_binary_poem, matrix_binary_contents, dict_w
 df_all = pd.read_csv(filepath_or_buffer=path_data+'df_all.csv') #rank 需要太多时间，所以单独读一个
 
 
-print(df_all.contents[df_all.id == 17846].values[0])
-
 end_time = time.time()
 
 print('process time:',end_time - start_time)
