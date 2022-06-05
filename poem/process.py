@@ -206,10 +206,10 @@ def outlist_to_out(ans_list, df_all):
             flag[number] = True
             out = df_all.loc[df_all.id == number]
             # print(out)        
-            res = {"dynasty_name": out.dynasty_name.values,
-                   "poet_name": out.poet_name.values, 
-                   "poem_name": out.poem_name.values,
-                   "contents": out.contents.values}
+            res = {"dynasty_name": out.dynasty_name.values.tolist(),
+                   "poet_name": out.poet_name.values.tolist(), 
+                   "poem_name": out.poem_name.values.tolist(),
+                   "contents": out.contents.values.tolist()}
             print(res)
             results.append(res)
 

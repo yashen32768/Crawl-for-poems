@@ -41,12 +41,12 @@ def process_data():
     return dict_word, matrix_binary_all, matrix_binary_poem, matrix_binary_contents, dict_word_pinyin, dict_pinyin_word
 
 
-start_time = time.time()
+# start_time = time.time()
 dict_word, matrix_binary_all, matrix_binary_poem, matrix_binary_contents, dict_word_pinyin, dict_pinyin_word = process_data()  # 处理一次之后就好
 df_all = pd.read_csv(filepath_or_buffer=path_data +
                      'df_all.csv')  # rank 需要太多时间，所以单独读一个
-end_time = time.time()
-print('process time:', end_time - start_time)
+# end_time = time.time()
+# print('process time:', end_time - start_time)
 
 
 '''
@@ -69,20 +69,24 @@ def results():
     print(query, method)
 
     if method == '0':
+        start_time = time.time()
         ans = query_binary(dict_word, matrix_binary_all, df_all, query)
         out_list = vec_to_outlist(ans)
         results = outlist_to_out(out_list, df_all)
-        # results = []
-        return render_template("results.html", results=results, query=query)
+        end_time = time.time()
+        return render_template("results.html", results=results, query=query, num=len(results), time=end_time-start_time)
 
     elif method == "1":
+        start_time = time.time()
         ans = query_zone(df_all, dict_word, matrix_binary_poem,
                             matrix_binary_contents,  query)
         out_list = vec_to_outlist(ans)
         results = outlist_to_out(out_list, df_all)
-        return render_template("results.html", results=results, query=query)
+        end_time = time.time()
+        return render_template("results.html", results=results, query=query, num=len(results), time=end_time-start_time)
 
     elif method == "2":
+        start_time = time.time()
         ans1, ans = query_fuzzy(
             dict_word_pinyin, dict_pinyin_word, dict_word, matrix_binary_all, df_all, query)
         out_list1 = vec_to_outlist(ans1)
@@ -91,23 +95,28 @@ def results():
         out_list2 = query_seq_noquery(out_list2, df_all)
         out_list = out_list1 + out_list2
         results = outlist_to_out(out_list, df_all)  # 最好改成模糊搜索版本的
-        return render_template("results.html", results=results, query=query)
+        end_time = time.time()
+        return render_template("results.html", results=results, query=query, num=len(results), time=end_time-start_time)
 
     elif method == "3":
+        start_time = time.time()
         ans = query_binary(dict_word, matrix_binary_all, df_all, query)
         out_list = vec_to_outlist(ans)
         out_list = query_seq(query, out_list, df_all)
         results = outlist_to_out(out_list, df_all)
-        return render_template("results.html", results=results, query=query)
+        end_time = time.time()
+        return render_template("results.html", results=results, query=query, num=len(results), time=end_time-start_time)
 
     elif method == "4":
+        start_time = time.time()
         query = query_zone_input()
         ans = query_zone(df_all, dict_word, matrix_binary_poem,
                             matrix_binary_contents, query)
         out_list = vec_to_outlist(ans)
         out_list = query_seq_noquery(out_list, df_all)
         results = outlist_to_out(out_list, df_all)
-        return render_template("results.html", results=results, query=query)
+        end_time = time.time()
+        return render_template("results.html", results=results, query=query, num=len(results), time=end_time-start_time)
     # except:
     #     return render_template("error.html")
 
