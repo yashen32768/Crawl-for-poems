@@ -66,7 +66,7 @@ def results():
     query = (request.form['search'])
     method = request.form['method']
     results = []
-    # print(query, method)
+    print(query, method)
 
     if method == '0':
         start_time = time.time()

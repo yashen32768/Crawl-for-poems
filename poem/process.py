@@ -205,12 +205,20 @@ def outlist_to_out(ans_list, df_all):
             num = num + 1
             flag[number] = True
             out = df_all.loc[df_all.id == number]
-            # print(out)        
-            res = {"dynasty_name": out.dynasty_name.values.tolist(),
-                   "poet_name": out.poet_name.values.tolist(), 
-                   "poem_name": out.poem_name.values.tolist(),
-                   "contents": out.contents.values.tolist()}
-            print(res)
+            print(out)    
+            # res = {"dynasty_name": out.dynasty_name.values.tolist(),
+            #        "poet_name": out.poet_name.values.tolist(), 
+            #        "poem_name": out.poem_name.values.tolist(),
+            #        "contents": out.contents.values.tolist()}
+            res = {"dynasty_name": out.at[number, "dynasty_name"],
+                   "poet_name": out.at[number, "poet_name"],
+                   "poem_name": out.at[number, "poem_name"],
+                   "contents": out.at[number, "contents"]}
+            # print(res)
+            tmp = res["contents"]
+            tmp = tmp.replace('\\', '')
+            tmp = tmp.replace('n', '')
+            res["contents"] = tmp
             results.append(res)
 
     print('共搜到诗的数目：')
