@@ -80,12 +80,14 @@ while flag_continue:
         ans = query_binary(dict_word, matrix_binary_all, df_all, query)
 
         out_list =  vec_to_outlist(ans)
+        out_list =  query_seq_noquery(out_list, df_all)
         outlist_to_out(out_list, df_all)
     if leixing == '1':
         query = query_zone_input()
         ans = query_zone(df_all, dict_word, matrix_binary_poem, matrix_binary_contents,  query)
 
         out_list =  vec_to_outlist(ans)
+        out_list =  query_seq_noquery(out_list, df_all)
         outlist_to_out(out_list,df_all)
     if leixing == '2':
         query = input('请输入模糊搜索\n')
