@@ -40,6 +40,7 @@ form.search-bar input[type=text] {
   float: left;
   width: 80%;
   background: #f1f1f1;
+  margin-bottom: 15px;
 }
 
 /* Style the submit button */
@@ -54,6 +55,7 @@ form.search-bar input[type=submit] {
   border-left: none; /* Prevent double borders */
   cursor: pointer;
   position: relative;
+  margin-bottom: 15px;
 }
 
 form.search-bar input[type=submit]:hover {
@@ -90,17 +92,17 @@ p {
                 <input type="submit"></button>
                 <div class="buttons">
                     <div class="search-model">
-                        <p>Please select search method</p>
+                        <p class="tips">Please select search method</p>
                         <input type="radio" name="method" id="binary" value="0" checked="checked">
-                        <label for="boolean">Binary</label>
+                        <label for="boolean" class="model_choice">Binary</label>
                         <input type="radio" name="method" id="zone" value="1">
-                        <label for="boolean">Zone</label>
+                        <label for="boolean" class="model_choice">Zone</label>
                         <input type="radio" name="method" id="fuzzy" value="2">
-                        <label for="boolean">Fuzzy</label>
+                        <label for="boolean" class="model_choice">Fuzzy</label>
                         <input type="radio" name="method" id="ranked" value="3">
-                        <label for="boolean">Ranked</label>
+                        <label for="boolean" class="model_choice">Ranked</label>
                         <input type="radio" name="method" id="ranked zone" value="4">
-                        <label for="boolean">Ranked Zone</label>
+                        <label for="boolean" class="model_choice">Ranked Zone</label>
                     </div>
                     <!-- <select class="search-model">
                         <option value="0">Binary</option>                   

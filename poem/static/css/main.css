@@ -16,7 +16,13 @@
     font-size: large;
     margin-top: 15px;
 } */
-
+.model_choice{
+    font-size: large;
+}
+.tips{
+    font-size: large;
+    margin-top: 25px;
+}
 .bar{
     margin: 20px;
     position: relative;
