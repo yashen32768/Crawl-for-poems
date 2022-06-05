@@ -71,3 +71,8 @@ set m.dynasty_id=q.dynasty_id
 
 scrapy crawl crawler_tangshi
 ```
+# 运行网页
+```
+$env: FLASK_APP = "app"
+flask run
+```
