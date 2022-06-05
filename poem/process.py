@@ -205,16 +205,15 @@ def outlist_to_out(ans_list, df_all):
             num = num + 1
             flag[number] = True
             out = df_all.loc[df_all.id == number]
-            print(out)    
-            # res = {"dynasty_name": out.dynasty_name.values.tolist(),
-            #        "poet_name": out.poet_name.values.tolist(), 
-            #        "poem_name": out.poem_name.values.tolist(),
-            #        "contents": out.contents.values.tolist()}
-            res = {"dynasty_name": out.at[number, "dynasty_name"],
-                   "poet_name": out.at[number, "poet_name"],
-                   "poem_name": out.at[number, "poem_name"],
-                   "contents": out.at[number, "contents"]}
-            # print(res)
+            # print(out)    
+            res = {"dynasty_name": out.dynasty_name.values[0],
+                   "poet_name": out.poet_name.values[0], 
+                   "poem_name": out.poem_name.values[0],
+                   "contents": out.contents.values[0]}
+            # res = {"dynasty_name": out.loc[:, "dynasty_name"].values,
+            #        "poet_name": out.loc[:, "poet_name"].values,
+            #        "poem_name": out.loc[:, "poem_name"].values,
+            #        "contents": out.loc[:, "contents"].values}
             tmp = res["contents"]
             tmp = tmp.replace('\\', '')
             tmp = tmp.replace('n', '')
@@ -430,13 +429,14 @@ def query_zone(df_all, dict_word, matrix_binary_poem, matrix_binary_contents,  c
         list_poet = np.ones(length_poem + 1, dtype=int)
     if context[2] != 0:
         # print('poem')
-        list_poem = binary_search_in(context[2], dict_word, matrix_binary_poem)
+        list_poem = binary_search_in(
+            context[2], dict_word, matrix_binary_poem, df_all)
     else:
         list_poem = np.ones(length_poem + 1, dtype=int)
     if context[3] != 0:
         # print('s')
         list_context = binary_search_in(
-            context[3], dict_word, matrix_binary_contents)
+            context[3], dict_word, matrix_binary_contents, df_all)
     else:
         list_context = np.ones(length_poem + 1, dtype=int)
     ans = binary_search_and(list_dynasty, list_poet)

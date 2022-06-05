@@ -60,11 +60,18 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/zone_search")
+def zone():
+    return render_template("zone_search.html")
+
+
 @app.route("/results", methods=['POST'])
 def results():
     # try:
     query = (request.form['search'])
     method = request.form['method']
+    if method == 1 or method == 4:
+        zone = request.form['zone']
     results = []
     print(query, method)
 
@@ -74,16 +81,14 @@ def results():
         out_list = vec_to_outlist(ans)
         results = outlist_to_out(out_list, df_all)
         end_time = time.time()
-        # test = results[0]["poem_name"]
-        # test = str(test)
-        # test = len(test)
-        # print(test)
         return render_template("results.html", results=results, query=query, num=len(results), time=end_time-start_time)
 
     elif method == "1":
         start_time = time.time()
+        z_query = [0, 0, 0, 0]
+        z_query[zone] = query
         ans = query_zone(df_all, dict_word, matrix_binary_poem,
-                            matrix_binary_contents,  query)
+                            matrix_binary_contents,  z_query)
         out_list = vec_to_outlist(ans)
         results = outlist_to_out(out_list, df_all)
         end_time = time.time()
