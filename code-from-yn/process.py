@@ -21,6 +21,7 @@ def preprocess():
     # global df_poem_name
     # global df_desc
     sqltxt = sqlfile.readline()
+    sef_id = 0
 
     dict_dynasty_name = {0:"醌"} #古诗词不存在的字，占位用的，可以用null，但是我想选个字（
     # dict_dynasty_id = {0:0}
@@ -38,7 +39,8 @@ def preprocess():
         #     print(i)
         #     print(content)
         
-        id = int(m[13]) - 159171 
+        id = sef_id
+        sef_id = sef_id + 1
         # dict_dynasty_id[id] = m[14]
         dict_dynasty_name[id] = m[16]
         dict_poet_name[id] = m[19]
@@ -177,7 +179,10 @@ def binary_search_not(vec0):
     length = len(vec0)
     ans = []
     for i in range(length):
-        ans.append(not vec0[i])
+        if i > 53054:
+            ans.append(0)
+        else:
+            ans.append(not vec0[i])
 
     return ans
 
@@ -216,10 +221,12 @@ def outlist_to_out(ans_list, df_all):
 def query_seq(query, ans_list, df_all):
     # print('query')
     # print(query)
-    ans = []
-
+    if ans_list == []:
+        return ans_list
     if ans_list == NULL:
         return
+    ans = []
+
     for i in ans_list:
         out = df_all.loc[df_all.id == i].values[0]
         if out[3].find(query) >= 0:
@@ -250,9 +257,11 @@ def query_seq_noquery(ans_list, df_all): #query 太复杂而不好对其排序
     # print('query')
     # print(query)
     ans = []
+    # print(ans_list)
+    
 
-    if ans_list == NULL:
-        return
+    if ans_list == []:
+        return ans_list
     for i in ans_list:
         out = df_all.loc[df_all.id == i].values[0]
         # print(out)
