@@ -67,70 +67,70 @@ def zone():
 
 @app.route("/results", methods=['POST'])
 def results():
-    # try:
-    query = (request.form['search'])
-    method = request.form['method']
-    if method == "1" or method == "4":
-        zone = int(request.form['zone'])
-    results = []
-    print(query, method)
+    try:
+        query = (request.form['search'])
+        method = request.form['method']
+        if method == "1" or method == "4":
+            zone = int(request.form['zone'])
+        results = []
+        print(query, method)
 
-    if method == '0':
-        start_time = time.time()
-        ans = query_binary(dict_word, matrix_binary_all, df_all, query)
-        out_list = vec_to_outlist(ans)
-        results = outlist_to_out(out_list, df_all)
-        end_time = time.time()
-        return render_template("results.html", results=results, query=query, num=len(results), time=end_time-start_time)
+        if method == '0':
+            start_time = time.time()
+            ans = query_binary(dict_word, matrix_binary_all, df_all, query)
+            out_list = vec_to_outlist(ans)
+            results = outlist_to_out(out_list, df_all)
+            end_time = time.time()
+            return render_template("results.html", results=results, query=query, num=len(results), time=end_time-start_time)
 
-    elif method == "1":
-        # print(type(zone))
-        start_time = time.time()
-        z_query = [0, 0, 0, 0]
-        z_query[zone] = query
-        # print(query, z_query)
-        ans = query_zone(df_all, dict_word, matrix_binary_poem,
-                         matrix_binary_contents,  z_query)
-        out_list = vec_to_outlist(ans)
-        results = outlist_to_out(out_list, df_all)
-        end_time = time.time()
-        return render_template("results.html", results=results, query=query, num=len(results), time=end_time-start_time)
+        elif method == "1":
+            # print(type(zone))
+            start_time = time.time()
+            z_query = [0, 0, 0, 0]
+            z_query[zone] = query
+            # print(query, z_query)
+            ans = query_zone(df_all, dict_word, matrix_binary_poem,
+                             matrix_binary_contents,  z_query)
+            out_list = vec_to_outlist(ans)
+            results = outlist_to_out(out_list, df_all)
+            end_time = time.time()
+            return render_template("results.html", results=results, query=query, num=len(results), time=end_time-start_time)
 
-    elif method == "2":
-        start_time = time.time()
-        ans1, ans = query_fuzzy(
-            dict_word_pinyin, dict_pinyin_word, dict_word, matrix_binary_all, df_all, query)
-        out_list1 = vec_to_outlist(ans1)
-        out_list1 = query_seq_noquery(out_list1, df_all)
-        out_list2 = vec_to_outlist(ans)
-        out_list2 = query_seq_noquery(out_list2, df_all)
-        out_list = out_list1 + out_list2
-        results = outlist_to_out(out_list, df_all)  # 最好改成模糊搜索版本的
-        end_time = time.time()
-        return render_template("results.html", results=results, query=query, num=len(results), time=end_time-start_time)
+        elif method == "2":
+            start_time = time.time()
+            ans1, ans = query_fuzzy(
+                dict_word_pinyin, dict_pinyin_word, dict_word, matrix_binary_all, df_all, query)
+            out_list1 = vec_to_outlist(ans1)
+            out_list1 = query_seq_noquery(out_list1, df_all)
+            out_list2 = vec_to_outlist(ans)
+            out_list2 = query_seq_noquery(out_list2, df_all)
+            out_list = out_list1 + out_list2
+            results = outlist_to_out(out_list, df_all)  # 最好改成模糊搜索版本的
+            end_time = time.time()
+            return render_template("results.html", results=results, query=query, num=len(results), time=end_time-start_time)
 
-    elif method == "3":
-        start_time = time.time()
-        ans = query_binary(dict_word, matrix_binary_all, df_all, query)
-        out_list = vec_to_outlist(ans)
-        out_list = query_seq(query, out_list, df_all)
-        results = outlist_to_out(out_list, df_all)
-        end_time = time.time()
-        return render_template("results.html", results=results, query=query, num=len(results), time=end_time-start_time)
+        elif method == "3":
+            start_time = time.time()
+            ans = query_binary(dict_word, matrix_binary_all, df_all, query)
+            out_list = vec_to_outlist(ans)
+            out_list = query_seq(query, out_list, df_all)
+            results = outlist_to_out(out_list, df_all)
+            end_time = time.time()
+            return render_template("results.html", results=results, query=query, num=len(results), time=end_time-start_time)
 
-    elif method == "4":
-        start_time = time.time()
-        z_query = [0, 0, 0, 0]
-        z_query[zone] = query
-        ans = query_zone(df_all, dict_word, matrix_binary_poem,
-                         matrix_binary_contents, query)
-        out_list = vec_to_outlist(ans)
-        out_list = query_seq_noquery(out_list, df_all)
-        results = outlist_to_out(out_list, df_all)
-        end_time = time.time()
-        return render_template("results.html", results=results, query=query, num=len(results), time=end_time-start_time)
-    # except:
-    #     return render_template("error.html")
+        elif method == "4":
+            start_time = time.time()
+            z_query = [0, 0, 0, 0]
+            z_query[zone] = query
+            ans = query_zone(df_all, dict_word, matrix_binary_poem,
+                             matrix_binary_contents, query)
+            out_list = vec_to_outlist(ans)
+            out_list = query_seq_noquery(out_list, df_all)
+            results = outlist_to_out(out_list, df_all)
+            end_time = time.time()
+            return render_template("results.html", results=results, query=query, num=len(results), time=end_time-start_time)
+    except:
+        return render_template("error.html")
 
 
 def main():
