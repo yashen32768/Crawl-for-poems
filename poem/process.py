@@ -581,6 +581,28 @@ def query_fuzzy(dict_word_pinyin, dict_pinyin_word, dict_word, matrix_binary_all
     return ans1, ans
 
 
+def query_fuzzy_single_word(dict_word_pinyin, dict_pinyin_word, dict_word, matrix_binary_all, df_all, query_word):
+
+    ans1 = binary_search_in(query_word, dict_word, matrix_binary_all, df_all)
+
+    ans = np.zeros(length_poem + 1, dtype=int)
+
+    for (i, word) in enumerate(query_word):
+        new_str = query_word.split(word)
+        print(new_str)
+
+        if new_str[0] != '' or new_str[1] != '':
+            temp = binary_search_in(
+                new_str[0]+new_str[1], dict_word, matrix_binary_all, df_all)
+        else:
+            temp = binary_search_in_qfsw(
+                new_str[0], new_str[1], dict_word, matrix_binary_all, df_all)
+
+        ans = binary_search_or(ans, temp)
+
+    return ans1, ans
+
+
 def rank_determine(df_all):
     # print("???")
     # length = df_all.shape[0]

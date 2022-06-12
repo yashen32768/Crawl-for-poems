@@ -100,6 +100,8 @@ def results():
             start_time = time.time()
             ans1, ans = query_fuzzy(
                 dict_word_pinyin, dict_pinyin_word, dict_word, matrix_binary_all, df_all, query)
+            ans1, ans = query_fuzzy_single_word(
+                dict_word_pinyin, dict_pinyin_word, dict_word, matrix_binary_all, df_all, query)
             out_list1 = vec_to_outlist(ans1)
             out_list1 = query_seq_noquery(out_list1, df_all)
             out_list2 = vec_to_outlist(ans)
