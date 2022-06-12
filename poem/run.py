@@ -122,7 +122,14 @@ while flag_continue:
         out_list = vec_to_outlist(ans)
         out_list = query_seq_noquery(out_list, df_all)
         outlist_to_out(out_list, df_all)
-
+    
+    if leixing == '5':
+        query = input('请输入模糊搜索\n')
+        ans1, ans = query_fuzzy_single_word(dict_word_pinyin, dict_pinyin_word, dict_word, matrix_binary_all, df_all, query)
+        out_list =  vec_to_outlist(ans)
+        out_list =  query_seq_noquery(out_list, df_all)
+        outlist_to_out(out_list, df_all)     
+        
     input_continue = input('是否继续查询？输入n停止查询，其他继续查询\n')
     if input_continue == 'n':
         flag_continue = False
