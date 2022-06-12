@@ -644,12 +644,11 @@ def query_fuzzy_single_word(dict_word_pinyin, dict_pinyin_word, dict_word, matri
 
     for (i, word) in enumerate(query_word):
         new_str = query_word.split(word)
-        print(new_str)
-
-        if new_str[0] != '' or new_str[1] != '':
-            temp =  binary_search_in(new_str[0]+new_str[1], dict_word, matrix_binary_all, df_all)
-        else:
+        # print(new_str)
+        if new_str[0] != '' and new_str[1] != '':
             temp =  binary_search_in_qfsw(new_str[0], new_str[1], dict_word, matrix_binary_all, df_all)
+        else:
+            temp =  binary_search_in(new_str[0]+new_str[1], dict_word, matrix_binary_all, df_all)
 
         ans = binary_search_or(ans, temp)
 
@@ -683,13 +682,13 @@ def binary_search_in_qfsw(context, context2, dict_word, matrix_binary, df_all):
         for (id, value) in enumerate(out):
             if value == 1:
                 context_in_all = df_all.loc[df_all.id == id].values[0]
-
-
                 exist = context_in_all[2].find(context) + context_in_all[3].find(context) + context_in_all[4].find(context) + context_in_all[5].find(context)
                 exist2 = context_in_all[2].find(context2) + context_in_all[3].find(context2) + context_in_all[4].find(context2) + context_in_all[5].find(context2)
                 #查询位置+1，似乎是因为读入df的问题
                 if exist == -4 or exist2 == 4:
                     out[id] = 0
+                # print(exist)
+                # print(exist2)
                 if exist >= exist2:
                     out[id] = 0
         return out
