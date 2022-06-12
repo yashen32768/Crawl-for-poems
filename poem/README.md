@@ -71,6 +71,19 @@ set m.dynasty_id=q.dynasty_id
 
 scrapy crawl poems
 ```
+
+# 运行后端
+
+```
+进入poem目录，运行
+
+python run.py
+进入操作界面，按提示进行操作即可
+
+*初次使用需要进行一次df_all的初始化和储存
+```
+
+
 # 运行网页
 ```
 $env: FLASK_APP = "app"
