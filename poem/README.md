@@ -76,4 +76,3 @@ scrapy crawl poems
 $env: FLASK_APP = "app"
 flask run
 ```
-For zone search, manually add /zone_search jump after the URL.
